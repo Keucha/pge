@@ -40,3 +40,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('user/location/{id}',[App\Http\Controllers\HomeController::class,'userlocationlist']);
 
 Route::get('/users/datatabletwo',[App\Http\Controllers\HomeController::class,'userlistdatatabletwo'])->name('userdatatabletwo');
+
+Route::get('/mapview',[App\Http\Controllers\HomeController::class, 'mapview'])->name('mapview');
+
+Route::post('/saveUser',[App\Http\Controllers\Admin::class, 'saveUser'])->name('saveUser');

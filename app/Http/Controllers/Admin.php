@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Mail;
 
 use Auth;
-
+use Illuminate\Support\Facades\Hash;
 use Response;
 class Admin extends Controller
 {
@@ -51,9 +51,9 @@ class Admin extends Controller
       {
         return redirect('/');
       }
-     
 
-      
+
+
 
     }
 
@@ -75,7 +75,7 @@ class Admin extends Controller
           $resp_one = $posted_arr[0]['click_event_data'];
 
 
-          
+
 
           if(isset($posted_arr[1]['place_info_data']))
           {
@@ -110,32 +110,32 @@ class Admin extends Controller
           {
             return Response::json(array(
                     'code'=>200
-                )); 
+                ));
           }else
           {
-          
+
           $location_id = DB::table('user_locations')->insertGetId($data_for_insert);
-        
+
 
             return Response::json(array(
                     'code'=>200
 
-                )); 
+                ));
           }
 
-          
+
       }
-     
+
     }
 
 
     public function getalllocationsbyuserid(Request $req)
     {
         $user_id = Auth::user()->id;
-        
+
         $query =  DB::table('user_locations')->orderBy('id','DESC')->get();
 
-        
+
 
         if($query->count() > 0)
         {
@@ -145,7 +145,7 @@ class Admin extends Controller
                     'code'=>200,
                     'resp'=>$query,
                     'resp_two'=>$query_two
-                )); 
+                ));
         }
         else
         {
@@ -153,7 +153,7 @@ class Admin extends Controller
                     'code'=>400,
                     'resp'=>'',
                     'resp_two'=>''
-                )); 
+                ));
         }
 
     }
@@ -165,21 +165,63 @@ class Admin extends Controller
 
       if($query->count() > 0)
         {
-          
+
 
           return Response::json(array(
                     'code'=>200,
                     'resp'=>$query
-                )); 
+                ));
         }
         else
         {
           return Response::json(array(
                     'code'=>400,
                     'resp'=>'',
-                )); 
+                ));
         }
 
+    }
+
+    public function saveUser(Request $req)
+    {
+        $req = $req->donnee;
+        if (!filter_var($req["email"], FILTER_VALIDATE_EMAIL)) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "L'adresse email est invalide"
+            ]);
+        }
+        if (User::where('email', $req["email"])->count() > 0) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "L'adresse email est déjà utilisée"
+            ]);
+        }
+        if ($req["password"] == $req["repassword"]) {
+            try {
+                $user = new User();
+                $user->name = $req["name"];
+                $user->email = $req["email"];
+                $user->password = Hash::make($req["password"]);
+                $user->role_id = $req["role"];
+                $user->user_status = $req["status"];
+                $user->save();
+                return response()->json([
+                    "status" => "SUCCESS",
+                    "message" => "L'utilisateur a été enregistré avec succès"
+                ]);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    "status" => "FAILED",
+                    "message" => "Une erreur inattendue s'est produite lors de l'enregistrement des informations de l'utilisateur<br>".$th
+                ]);
+            }
+        } else {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Les mots de passe ne correspondent pas"
+            ]);
+        }
     }
 
 

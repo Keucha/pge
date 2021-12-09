@@ -51,7 +51,7 @@ class HomeController extends Controller
     public function SendAVE() {
 
       $data = array("name"=>"GoogleMapApp");
-      
+
       Mail::send('mail', $data, function($message) {
         $user = Auth::user();
          $message->to($user->email, $user->name)
@@ -59,8 +59,8 @@ class HomeController extends Controller
 
          $message->from('info@admedia-technologies.com','GoogleMapApp');
       });
-      
-        
+
+
    }
 
     public function index()
@@ -84,7 +84,7 @@ class HomeController extends Controller
         }
 
     }else{
-            
+
 
             $this->SendAVE();
 
@@ -94,14 +94,14 @@ class HomeController extends Controller
 
     }
 
-       
-        
+
+
        // return view('home');
     }
 
     public function userlistingview()
     {
-       
+
        $data['list'] = User::where('role_id','>',1)->get();
 
         return view('userslist',$data);
@@ -110,7 +110,7 @@ class HomeController extends Controller
     public function userlistdatatable()
     {
         $users = User::where('role_id','>',1)->get();
-        
+
         return Datatables::of($users)
         ->addColumn('status', function($query){
            return $query->user_status==1 ? 'Active' : 'Inactive';
@@ -128,7 +128,7 @@ class HomeController extends Controller
         public function userlistdatatabletwo(Request $req)
     {
         $users = DB::table('user_locations')->where('user_id','=',$req->user_id)->get();
-        
+
         return Datatables::of($users)
         ->addColumn('formatted_address', function($query){
            if(empty($query->business_status) || $query->business_status=="NF")
@@ -137,7 +137,7 @@ class HomeController extends Controller
            }else
            {
                 return $query->formatted_address;
-           } 
+           }
         })
          ->addColumn('created_at', function($query){
            return date('m-d-Y h:i a',strtotime($query->created_at));
@@ -158,7 +158,10 @@ class HomeController extends Controller
         return view('userlocations',$data);
     }
 
+    public function mapview()
+    {
+        return view('mapview');
+    }
 
 
-   
 }
