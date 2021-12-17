@@ -44,3 +44,17 @@ Route::get('/users/datatabletwo',[App\Http\Controllers\HomeController::class,'us
 Route::get('/mapview',[App\Http\Controllers\HomeController::class, 'mapview'])->name('mapview');
 
 Route::post('/saveUser',[App\Http\Controllers\Admin::class, 'saveUser'])->name('saveUser');
+
+Route::get('/getUserById/{id}',[App\Http\Controllers\Admin::class, 'getUserById'])->name('getUserById');
+
+Route::post('/editUser',[App\Http\Controllers\Admin::class, 'editUser'])->name('editUser');
+
+Route::get('user/delete/{id}',[App\Http\Controllers\Admin::class,'deleteUser']);
+
+Route::get('/getLocationById/{id}',[App\Http\Controllers\Admin::class, 'getLocationById'])->name('getLocationById');
+
+Route::post('/editLocation',[App\Http\Controllers\Admin::class, 'editLocation'])->name('editLocation');
+
+Route::get('location/delete/{id}',[App\Http\Controllers\Admin::class,'deleteLocation']);
+
+Route::get('getLocationsByType/{id}',[App\Http\Controllers\Admin::class,'getLocationsByType']);

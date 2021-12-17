@@ -1,4 +1,4 @@
-var apiKey = 'AIzaSyCzAVx1R2k2EiPNJgreLFxJKck8ricXeUA';
+var apiKey = 'AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs';
 
 var map;
 var drawingManager;
@@ -150,7 +150,7 @@ function loadLocationsinit(map, directionsService, directionsDisplay) {
       var clickLng = el.click_event_lng;
       var cLatLng = el.click_event_latlng_both;
       var MainOrigin = new google.maps.LatLng(clickLat, clickLng);
-      
+
       drawCircle(clickLat, clickLng);
 
       var PointA = new google.maps.LatLng(clickLat, clickLng);
@@ -243,7 +243,7 @@ function GetAllLocations() {
 
         htmltwo += `<div class="old-elements category-container" data-type="${el.location_type}">
             <div class="loc-heading">${el.location_type.toUpperCase()}</div>
-           
+
           </div>`;
 
       });
@@ -571,9 +571,9 @@ function initialize() {
         highlight(cLatLng, SingleRoadLat, SingleRoadLng, 90, '#8B4513');
 
         highlight(cLatLng,SingleRoadLat,SingleRoadLng,30,'#C00');
-        highlight(cLatLng,SingleRoadLat,SingleRoadLng,60,'#C00'); 
+        highlight(cLatLng,SingleRoadLat,SingleRoadLng,60,'#C00');
         highlight(cLatLng,SingleRoadLat,SingleRoadLng,120,'#C00');
-        highlight(cLatLng,SingleRoadLat,SingleRoadLng,150,'#C00'); 
+        highlight(cLatLng,SingleRoadLat,SingleRoadLng,150,'#C00');
 
         // highlight(cLatLng,SingleRoadLat,SingleRoadLng,180);
         // highlight(cLatLng,SingleRoadLat,SingleRoadLng,225);
@@ -634,43 +634,43 @@ function initialize() {
 
   /**Exp 01 start**/
   /*map.addListener("click", (mapsMouseEvent) => {
-  
-      
-  
-  
+
+
+
+
   //Example 01
     //   var cLat = mapsMouseEvent.latLng.lat();
     //   var cLng = mapsMouseEvent.latLng.lng();
     //   var cPlace = mapsMouseEvent.placeId;
     //   var cLatLng = cLat+","+cLng;
-     
+
     //   var latlng = new google.maps.LatLng(cLat,cLng);
     //   snappedCoordinates.push(latlng);
     //   placeIdArray.push(cPlace);
-  
+
     //   var snappedPolyline = new google.maps.Polyline({
     //   path: snappedCoordinates,
     //   strokeColor: '#add8e6',
     //   strokeWeight: 4,
     //   strokeOpacity: 0.9,
     // });
-  
+
     // //snappedPolyline.setMap(map);
     // polylines.push(snappedPolyline);
-  
-  
+
+
     // var pyrmont = new google.maps.LatLng(cLat,cLng);
     //    var request = {
     //   location: pyrmont,
     //   radius: '1500',
     //   types: ['store']
     // };
-  
+
     // service = new google.maps.places.PlacesService(map);
-    // service.nearbySearch(request, callback);  
+    // service.nearbySearch(request, callback);
     // function callback(results, status) {
     // if (status == google.maps.places.PlacesServiceStatus.OK) {
-      
+
     //      for (var i = 0; i < results.length; i++) {
     //     var place = results[i];
     //     if(i == 0)
@@ -678,43 +678,43 @@ function initialize() {
     //       var newSnap =new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
     //       snappedCoordinates.push(newSnap);
     //       placeIdArray.push(place.place_id);
-  
-  
+
+
     //     }
-  
+
     //   }
-          
-      
+
+
     // }
     // }
-          
-  
+
+
     //      var snappedPolylineTwo = new google.maps.Polyline({
     //         path: snappedCoordinates,
     //         strokeColor: '#add8e6',
     //         strokeWeight: 4,
     //         strokeOpacity: 0.9,
     //       });
-          
+
     //       polylines.push(snappedPolylineTwo);
-  
-  
-  
-  
+
+
+
+
     //   var path = snappedPolylineTwo.getPath();
     //   polylines.push(snappedPolylineTwo);
     //   runSnapToRoad(path);
-  
-    
-  
-  
+
+
+
+
       console.log("snapped",snappedCoordinates);
       console.log("Place",placeIdArray);
       console.log("poly",polylines)
-      
+
   });
-  
-  
+
+
   */
 
 

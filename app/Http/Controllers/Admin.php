@@ -95,6 +95,7 @@ class Admin extends Controller
             'click_event_lng'=>$resp_one['click_event_lng'],
             'click_event_place'=>$resp_one['click_event_plc'],
             'click_event_latlng_both'=>$resp_one['click_event_latlng_both'],
+            'location_type_id'=>(isset($resp_one['location_type_id']) ? $resp_one['location_type_id'] : ''),
             'business_status'=>(isset($resp_two['business_status']) ? $resp_two['business_status'] : ''),
             'formatted_address'=>(isset($resp_two['formatted_address']) ? $resp_two['formatted_address'] : ''),
             'name'=>(isset($resp_two['name']) ? $resp_two['name'] : ''),
@@ -213,7 +214,7 @@ class Admin extends Controller
             } catch (\Throwable $th) {
                 return response()->json([
                     "status" => "FAILED",
-                    "message" => "Une erreur inattendue s'est produite lors de l'enregistrement des informations de l'utilisateur<br>".$th
+                    "message" => "Une erreur inattendue s'est produite lors de l'enregistrement des informations de l'utilisateur<br>"
                 ]);
             }
         } else {
@@ -224,5 +225,128 @@ class Admin extends Controller
         }
     }
 
+    public function getUserById($id)
+    {
+        try {
+            $user = User::find($id);
+            return response()->json([
+                "status" => "SUCCESS",
+                "user" => $user
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Une erreur s'est produite lors de la récupération des informations de l'utilisateur"
+            ]);
+        }
+    }
 
+    public function editUser(Request $req)
+    {
+        $req = $req->donnee;
+        if (!filter_var($req["email"], FILTER_VALIDATE_EMAIL)) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "L'adresse email est invalide"
+            ]);
+        }
+        if (User::where('id', $req["id"])->count() != 1) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Utilisateur inconnu"
+            ]);
+        }
+        if (User::where('id', '!=', $req["id"])->where('email', $req["email"])->count() > 0) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "L'adresse email est déjà utilisée"
+            ]);
+        }
+        try {
+            $user = User::find($req["id"]);
+            $user->name = $req["name"];
+            $user->email = $req["email"];
+            if ($req["password"] != "" && $req["password"] == $req["repassword"]) {
+                $user->password = Hash::make($req["password"]);
+            } elseif ($req["password"] != "") {
+                return response()->json([
+                    "status" => "FAILED",
+                    "message" => "Les mots de passe ne correspondent pas"
+                ]);
+            }
+            $user->role_id = $req["role"];
+            $user->user_status = $req["status"];
+            $user->save();
+            return response()->json([
+                "status" => "SUCCESS",
+                "message" => "Les informations de l'utilisateur ont été mis à jour avec succès"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Une erreur inattendue s'est produite lors de la mise à jour des informations de l'utilisateur<br>"
+            ]);
+        }
+    }
+
+    public function deleteUser($id)
+    {
+        User::where("id", $id)->delete();
+        return redirect()->back();
+    }
+
+    public function getLocationById($id)
+    {
+        try {
+            $location = DB::table('user_locations')->where('id', $id)->first();
+            return response()->json([
+                "status" => "SUCCESS",
+                "location" => $location
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Une erreur s'est produite lors de la récupération des informations de la localisation"
+            ]);
+        }
+    }
+
+    public function editLocation(Request $req)
+    {
+        $req = $req->donnee;
+        if (DB::table('user_locations')->where('id', $req["id"])->count() != 1) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Localisation inconnue"
+            ]);
+        }
+        try {
+            DB::table('user_locations')->where('id', $req["id"])->update(['location_type_id' => $req["location_type_id"]]);
+            return response()->json([
+                "status" => "SUCCESS",
+                "message" => "Les informations de la localisation ont été mis à jour avec succès"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "FAILED",
+                "message" => "Une erreur inattendue s'est produite lors de la mise à jour des informations de la localisation<br>"
+            ]);
+        }
+    }
+
+    public function deleteLocation($id)
+    {
+        DB::table('user_locations')->where("id", $id)->delete();
+        return redirect()->back();
+    }
+
+    public function getLocationsByType($type)
+    {
+        $locations = DB::table('user_locations')->where('location_type_id', $type)->get();
+        return response()->json([
+            'type' => $type,
+            'statut' => 200,
+            'locations' => $locations,
+        ]);
+    }
 }

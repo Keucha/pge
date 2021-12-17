@@ -172,7 +172,7 @@
 
     <script src="https://www.gstatic.com/external_hosted/jquery2.min.js"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&key=AIzaSyCzAVx1R2k2EiPNJgreLFxJKck8ricXeUA"></script>
+      src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&key=AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs"></script>
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

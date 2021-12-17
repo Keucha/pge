@@ -11,6 +11,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script defer src="{{ asset('fontawesome/js/all.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&key=AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,7 +23,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -62,11 +64,11 @@
                                 </li>
                             @endif
 
-                            @if (Route::has('register'))
+                            {{-- @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Inscription') }}</a>
                                 </li>
-                            @endif
+                            @endif --}}
                         @endif
 
                         @else

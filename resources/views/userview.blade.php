@@ -83,7 +83,7 @@
     font-size: 16px;
     font-family: 'Roboto';
     font-weight: bold;
-    
+
     text-decoration: none;
 }
 .main-content a {
@@ -172,7 +172,7 @@
 
     <script src="https://www.gstatic.com/external_hosted/jquery2.min.js"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&key=AIzaSyCzAVx1R2k2EiPNJgreLFxJKck8ricXeUA"></script>
+      src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places,geometry&key=AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs"></script>
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -184,9 +184,9 @@
 
     <div class="main-content">
       <div class="toggle-location">
-         
+
         <a href="javascript:;" class="btn-location-show" onclick="openNav()">Show Locations</a>
-        
+
       </div>
       <div class="toggle-categories">
         <a href="javascript:;" class="btn-location-show" onclick="openNavOne()">Show Categories</a>
@@ -228,8 +228,8 @@
     <div id="map-rounded"></div>
 
     <div id="bar">
-  <p class="auto resourcedata" 
-  data-url-two="{{url('getalllocations')}}" 
+  <p class="auto resourcedata"
+  data-url-two="{{url('getalllocations')}}"
   data-url-three="{{url('loadinitdatalocations')}}" data-token="{{ csrf_token() }}" data-url="{{url('postdata')}}" style="margin: 0px !important;">
 
 <div class="container-one" style="margin: 0px !important;">

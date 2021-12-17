@@ -1,4 +1,4 @@
-var apiKey = 'AIzaSyCzAVx1R2k2EiPNJgreLFxJKck8ricXeUA';
+var apiKey = 'AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs';
 
 var map;
 var drawingManager;
@@ -153,11 +153,11 @@ function loadLocationsinit(map, directionsService, directionsDisplay) {
 
             // drawCircle(clickLat, clickLng);
 
-            var PointA = new google.maps.LatLng(clickLat, clickLng);
-            console.log(PointA);
+            // var PointA = new google.maps.LatLng(clickLat, clickLng);
+            // console.log(PointA);
 
-            var DestinationOne = google.maps.geometry.spherical.computeOffset(PointA, 300, 0);
-            calculateRoute(MainOrigin, DestinationOne);
+            // var DestinationOne = google.maps.geometry.spherical.computeOffset(PointA, 300, 0);
+            // calculateRoute(MainOrigin, DestinationOne);
 
             // var DestinationTwo = google.maps.geometry.spherical.computeOffset(PointA, 300, -90);
             // calculateRoute(MainOrigin, DestinationTwo);
@@ -241,7 +241,7 @@ function GetAllLocations() {
             var htmltwo = ``;
             $(resp.resp_two).each(function(index, el) {
 
-                htmltwo += `<div class="old-elements category-container" data-type="${el.location_type}">
+                htmltwo += `<div class="old-elements category-container" data-type="${el.location_type}" id="${el.id}">
             <div class="loc-heading">${el.location_type.toUpperCase()}</div>
 
           </div>`;
@@ -260,7 +260,6 @@ function GetAllLocations() {
     });
 
 }
-
 
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
@@ -310,27 +309,38 @@ function createMarker(place) {
 }
 
 
-function getLocationsandStore(placeType) {
+function getLocationsandStore(type) {
     for (let i = 0; i < MarkersArray.length; i++) {
         MarkersArray[i].setMap(null);
     }
-
-    var pyrmont = new google.maps.LatLng(12.36566, -1.53388);
-
-    var request = {
-        location: pyrmont,
-        radius: '500',
-        type: [placeType]
-    };
-
-    service = new google.maps.places.PlacesService(map);
-    service.nearbySearch(request, (results, status) => {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-                createMarker(results[i]);
-                console.log("locations", results[i]);
-            }
+    if (allRenders.length > 0) {
+        for (var i = 0; i < allRenders.length; i++) {
+            allRenders[i].setMap(null);
         }
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: '/getLocationsByType/' + type,
+    }).done(function(resp) {
+        if (resp.locations.length < 1) {
+            toastr.success("Aucun lieu trouvé pour cette catégorie");
+        } else if (resp.locations.length == 1) {
+            toastr.success(resp.locations.length + " lieu trouvé pour cette catégorie");
+        } else {
+            toastr.success(resp.locations.length + " lieux trouvés pour cette catégorie");
+        }
+        resp.locations.forEach(element => {
+            map.panTo({ lat: parseFloat(element.click_event_lat), lng: parseFloat(element.click_event_lng) });
+            marker = new google.maps.Marker({
+                map: map,
+                position: { lat: parseFloat(element.click_event_lat), lng: parseFloat(element.click_event_lng) }
+            });
+            MarkersArray.push(marker);
+        });
+    }).fail(function(resp) {
+        console.log(resp);
+        $("#error_field").html("Une erreur inattendue s'est produite lors de l'enregistrement de la localisation");
     });
 }
 
@@ -453,7 +463,7 @@ function initialize() {
 
         dirService.route(request, function(result, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                console.log(result.routes[0].legs[0].distance.value);
+                // console.log(result.routes[0].legs[0].distance.value);
                 if (result.routes[0].legs[0].distance.value <= 300) {
                     dirRenderer.setDirections(result);
                 }
@@ -583,15 +593,17 @@ function initialize() {
                 // ***********
                 var ReductionDegree = 0;
                 var radius = 300;
+                toastr.success("Veuillez patienter, les tracés sont en cours de traitement...");
                 var inter = setInterval(function() {
                     ReductionDegree += 10;
-                    if (ReductionDegree >= 360 && radius >= 50) {
+                    if (ReductionDegree >= 360 && radius >= 45) {
                         ReductionDegree = 0;
                         radius = radius - 15;
+                        toastr.success("Veuillez patienter, les tracés sont toujours en cours de traitement...");
                     }
-                    console.log("************************************Dégré = " + ReductionDegree + " et Rayon = " + radius);
+                    // console.log("************************************Dégré = " + ReductionDegree + " et Rayon = " + radius);
                     highlight(cLatLng, SingleRoadLat, SingleRoadLng, ReductionDegree, '#C00', radius);
-                    if (radius < 50) {
+                    if (radius < 45) {
                         clearInterval(inter);
                     }
                 }, 2000);
@@ -821,9 +833,9 @@ $(document).on('click', '.category-container', function(resp) {
 
     $(this).css("background", "red");
 
-    var dataType = $(this).attr("data-type");
+    var type = $(this).attr("id");
 
-    getLocationsandStore(dataType);
+    getLocationsandStore(type);
 });
 
 

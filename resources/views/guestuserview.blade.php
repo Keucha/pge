@@ -38,9 +38,9 @@
 
     <script src="https://www.gstatic.com/external_hosted/jquery2.min.js"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places&key=AIzaSyCzAVx1R2k2EiPNJgreLFxJKck8ricXeUA"></script>
+      src="https://maps.googleapis.com/maps/api/js?libraries=drawing,places&key=AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs"></script>
     <script>
-var apiKey = 'AIzaSyCzAVx1R2k2EiPNJgreLFxJKck8ricXeUA';
+var apiKey = 'AIzaSyB3ooLNpuPYxeG-NX9j1t-b0XeaHQBHvVs';
 
 var map;
 var drawingManager;
@@ -162,7 +162,7 @@ $(window).load(initialize);
     <div id="map"></div>
     <div id="bar">
       <p class="auto">
-       <span style="font-size: 16px;font-weight: bold;">Guest User</span> 
+       <span style="font-size: 16px;font-weight: bold;">Guest User</span>
         <br />
  <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
