@@ -461,12 +461,38 @@ function initialize() {
             unitSystem: google.maps.UnitSystem.IMPERIAL
         };
 
-        dirService.route(request, function(result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                // console.log(result.routes[0].legs[0].distance.value);
-                if (result.routes[0].legs[0].distance.value <= 300) {
-                    dirRenderer.setDirections(result);
+        // dirService.route(request, function(result, status) {
+        //     if (status == google.maps.DirectionsStatus.OK) {
+        //         // console.log(result);
+        //         for (var i = 0, len = result.routes.length; i < len; i++) {
+        //             if (result.routes[i].legs[0].distance.value <= 300) {
+        //                 dirRenderer.setRouteIndex(i);
+        //                 dirRenderer.setDirections(result);
+        //             }
+        //         }
+        //     }
+        // });
+        var origin = "" + google.maps.geometry.spherical.computeOffset(pointA, distance, degree) + "";
+        var destination = cLatLng;
+        var travelMode = google.maps.DirectionsTravelMode.WALKING;
+        origin = origin.substr(1, origin.length - 2);
+        $.ajax({
+            url: "/getRoutes/origin/" + origin + "/destination/" + destination + "/travelMode/" + travelMode,
+            method: "GET",
+            dataType: "json",
+            success: function(result) {
+                console.log(result);
+                if (result != null) {
+                    for (var i = 0, len = result.routes.length; i < len; i++) {
+                        if (result.routes[0].legs[0].distance.value <= 300) {
+                            dirRenderer.setRouteIndex(i);
+                            dirRenderer.setDirections(result);
+                        }
+                    }
                 }
+            },
+            error: function(err) {
+                console.log(err.responseText);
             }
         });
     }
@@ -592,7 +618,7 @@ function initialize() {
 
                 // ***********
                 var ReductionDegree = 0;
-                var radius = 300;
+                var radius = 200;
                 toastr.success("Veuillez patienter, les tracés sont en cours de traitement...");
                 var inter = setInterval(function() {
                     ReductionDegree += 10;

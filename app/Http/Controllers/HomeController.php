@@ -165,5 +165,15 @@ class HomeController extends Controller
         return view('userview');
     }
 
-
+    public function getRoutes($origin, $destination, $travelMode)
+    {
+        $directions_data = file_get_contents('https://maps.googleapis.com/maps/api/directions/json?&origin='.urlencode($origin).'&destination='.urlencode($destination).'&provideRouteAlternatives=true&travelMode='.urlencode($travelMode).'&key=AIzaSyAak42wWI92YaWhlDdEO3zUXJjGLRAJZTg');
+        $directions_arr = json_decode($directions_data);
+        return $directions_arr;
+        // if ($directions_arr->status=='OK') {
+        //     return $directions_arr;
+        // } else {
+        //     return "null";
+        // }
+    }
 }

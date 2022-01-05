@@ -58,3 +58,5 @@ Route::post('/editLocation',[App\Http\Controllers\Admin::class, 'editLocation'])
 Route::get('location/delete/{id}',[App\Http\Controllers\Admin::class,'deleteLocation']);
 
 Route::get('getLocationsByType/{id}',[App\Http\Controllers\Admin::class,'getLocationsByType']);
+
+Route::get('getRoutes/origin/{origin}/destination/{destination}/travelMode/{travelMode}',[App\Http\Controllers\HomeController::class,'getRoutes']);
